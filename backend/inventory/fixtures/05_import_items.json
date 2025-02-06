@@ -1,0 +1,41 @@
+[
+    {
+        "model": "inventory.importitem",
+        "pk": 1,
+        "fields": {
+            "import_record": 1,
+            "product": 1,
+            "expected_quantity": 3,
+            "received_quantity": 3,
+            "notes": "Recibido en perfectas condiciones",
+            "created_at": "2024-02-01T10:00:00Z",
+            "updated_at": "2024-02-01T15:00:00Z"
+        }
+    },
+    {
+        "model": "inventory.importitem",
+        "pk": 2,
+        "fields": {
+            "import_record": 1,
+            "product": 2,
+            "expected_quantity": 2,
+            "received_quantity": 2,
+            "notes": "Verificación completa",
+            "created_at": "2024-02-01T10:00:00Z",
+            "updated_at": "2024-02-01T15:00:00Z"
+        }
+    },
+    {
+        "model": "inventory.importitem",
+        "pk": 3,
+        "fields": {
+            "import_record": 2,
+            "product": 1,
+            "expected_quantity": 5,
+            "received_quantity": 0,
+            "notes": "En espera de recepción",
+            "created_at": "2024-02-04T10:00:00Z",
+            "updated_at": "2024-02-04T10:00:00Z"
+        }
+    }
+]

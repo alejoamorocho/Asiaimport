@@ -1,0 +1,32 @@
+[
+    {
+        "model": "inventory.category",
+        "pk": 1,
+        "fields": {
+            "name": "Láser",
+            "description": "Equipos de tratamiento láser para diferentes aplicaciones estéticas",
+            "created_at": "2024-02-04T10:00:00Z",
+            "updated_at": "2024-02-04T10:00:00Z"
+        }
+    },
+    {
+        "model": "inventory.category",
+        "pk": 2,
+        "fields": {
+            "name": "Radiofrecuencia",
+            "description": "Equipos de tratamiento por radiofrecuencia",
+            "created_at": "2024-02-04T10:00:00Z",
+            "updated_at": "2024-02-04T10:00:00Z"
+        }
+    },
+    {
+        "model": "inventory.category",
+        "pk": 3,
+        "fields": {
+            "name": "Ultrasonido",
+            "description": "Equipos de tratamiento por ultrasonido",
+            "created_at": "2024-02-04T10:00:00Z",
+            "updated_at": "2024-02-04T10:00:00Z"
+        }
+    }
+]

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ficha Técnica</title>
+</head>
+<body>
+    <header>
+        <img src="{{ company_logo }}" alt="Logo" class="logo">
+        <h1>{{ company_name }}</h1>
+        <div class="document-info">
+            <h2>Ficha Técnica</h2>
+            <p>Equipo: {{ product.name }}</p>
+            <p>N° Serie: {{ unit.serial_number }}</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="product-info">
+            <h3>Información del Producto</h3>
+            <table>
+                <tr>
+                    <th>Categoría:</th>
+                    <td>{{ product.category.name }}</td>
+                </tr>
+                <tr>
+                    <th>Estado actual:</th>
+                    <td>{{ unit.get_status_display }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha de importación:</th>
+                    <td>{{ import.import_date|date:"d/m/Y" }}</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="specifications">
+            <h3>Especificaciones Técnicas</h3>
+            <table class="specs-table">
+                <tr>
+                    <th>Potencia:</th>
+                    <td>{{ product.specifications.potencia }} W</td>
+                </tr>
+                <tr>
+                    <th>Peso:</th>
+                    <td>{{ product.specifications.peso }} kg</td>
+                </tr>
+                <tr>
+                    <th>Dimensiones:</th>
+                    <td>{{ product.specifications.dimensiones }}</td>
+                </tr>
+                <tr>
+                    <th>Voltaje:</th>
+                    <td>{{ product.specifications.voltaje }} V</td>
+                </tr>
+                <tr>
+                    <th>Frecuencia:</th>
+                    <td>{{ product.specifications.frecuencia }} Hz</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="description">
+            <h3>Descripción</h3>
+            <p>{{ product.description|linebreaks }}</p>
+        </section>
+
+        {% if unit.notes %}
+        <section class="notes">
+            <h3>Notas Específicas de la Unidad</h3>
+            <p>{{ unit.notes|linebreaks }}</p>
+        </section>
+        {% endif %}
+
+        <section class="qr-code">
+            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+            <p>Escanee el código QR para más detalles</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Documento generado el {{ generated_at|date:"d/m/Y" }} a las {{ generated_at|time:"H:i" }}</p>
+        <div class="page-number"></div>
+    </footer>
+</body>
+</html>

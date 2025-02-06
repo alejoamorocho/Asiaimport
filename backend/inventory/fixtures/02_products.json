@@ -1,0 +1,53 @@
+[
+    {
+        "model": "inventory.product",
+        "pk": 1,
+        "fields": {
+            "name": "LaserPro X1000",
+            "category": 1,
+            "description": "Equipo láser de última generación para depilación",
+            "specifications": {
+                "potencia": "1000W",
+                "longitud_onda": "755nm",
+                "peso": "25kg",
+                "dimensiones": "50x40x30cm"
+            },
+            "created_at": "2024-02-04T10:00:00Z",
+            "updated_at": "2024-02-04T10:00:00Z"
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 2,
+        "fields": {
+            "name": "RF-3000",
+            "category": 2,
+            "description": "Sistema de radiofrecuencia para tratamientos faciales y corporales",
+            "specifications": {
+                "potencia": "300W",
+                "frecuencia": "1MHz",
+                "peso": "15kg",
+                "dimensiones": "40x30x20cm"
+            },
+            "created_at": "2024-02-04T10:00:00Z",
+            "updated_at": "2024-02-04T10:00:00Z"
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 3,
+        "fields": {
+            "name": "UltraCavi Plus",
+            "category": 3,
+            "description": "Equipo de cavitación por ultrasonido",
+            "specifications": {
+                "potencia": "500W",
+                "frecuencia": "40kHz",
+                "peso": "18kg",
+                "dimensiones": "45x35x25cm"
+            },
+            "created_at": "2024-02-04T10:00:00Z",
+            "updated_at": "2024-02-04T10:00:00Z"
+        }
+    }
+]

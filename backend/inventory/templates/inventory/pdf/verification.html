@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Verificación de Importación</title>
+</head>
+<body>
+    <header>
+        <img src="{{ company_logo }}" alt="Logo" class="logo">
+        <h1>{{ company_name }}</h1>
+        <div class="document-info">
+            <h2>Verificación de Importación</h2>
+            <p>Referencia: {{ import.reference_number }}</p>
+            <p>Fecha: {{ import.import_date }}</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="import-details">
+            <h3>Detalles de la Importación</h3>
+            <table>
+                <tr>
+                    <th>Estado:</th>
+                    <td>{{ import.get_status_display }}</td>
+                </tr>
+                <tr>
+                    <th>Creado por:</th>
+                    <td>{{ import.created_by.get_full_name }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha de creación:</th>
+                    <td>{{ import.created_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="items-list">
+            <h3>Items Importados</h3>
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad Esperada</th>
+                        <th>Cantidad Recibida</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.expected_quantity }}</td>
+                        <td>{{ item.received_quantity }}</td>
+                        <td>
+                            {% if item.received_quantity == item.expected_quantity %}
+                                ✓ Completo
+                            {% elif item.received_quantity < item.expected_quantity %}
+                                ⚠ Pendiente
+                            {% else %}
+                                ⚠ Excedido
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        {% if import.notes %}
+        <section class="notes">
+            <h3>Notas</h3>
+            <p>{{ import.notes|linebreaks }}</p>
+        </section>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>Documento generado el {{ generated_at|date:"d/m/Y" }} a las {{ generated_at|time:"H:i" }}</p>
+        <div class="page-number"></div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,28 @@
+[
+    {
+        "model": "inventory.import",
+        "pk": 1,
+        "fields": {
+            "reference_number": "IMP-2024-001",
+            "status": "completed",
+            "import_date": "2024-02-01",
+            "created_by": 1,
+            "notes": "Primera importación del año",
+            "created_at": "2024-02-01T10:00:00Z",
+            "updated_at": "2024-02-01T15:00:00Z"
+        }
+    },
+    {
+        "model": "inventory.import",
+        "pk": 2,
+        "fields": {
+            "reference_number": "IMP-2024-002",
+            "status": "in_progress",
+            "import_date": "2024-02-04",
+            "created_by": 1,
+            "notes": "Importación de equipos láser",
+            "created_at": "2024-02-04T10:00:00Z",
+            "updated_at": "2024-02-04T10:00:00Z"
+        }
+    }
+]

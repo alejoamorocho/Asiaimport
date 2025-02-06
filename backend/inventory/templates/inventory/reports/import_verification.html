@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Import Verification Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 2cm;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2em;
+        }
+        .info-table {
+            width: 100%;
+            margin-bottom: 2em;
+            border-collapse: collapse;
+        }
+        .info-table th, .info-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .info-table th {
+            background-color: #f5f5f5;
+            text-align: left;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .items-table th, .items-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .items-table th {
+            background-color: #f5f5f5;
+        }
+        .footer {
+            margin-top: 2em;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Import Verification Report</h1>
+        <h2>Reference: {{ import.reference_number }}</h2>
+    </div>
+
+    <table class="info-table">
+        <tr>
+            <th>Import Date:</th>
+            <td>{{ import.import_date }}</td>
+            <th>Status:</th>
+            <td>{{ import.status }}</td>
+        </tr>
+        <tr>
+            <th>Created By:</th>
+            <td>{{ import.created_by.get_full_name }}</td>
+            <th>Created At:</th>
+            <td>{{ import.created_at }}</td>
+        </tr>
+        {% if import.notes %}
+        <tr>
+            <th>Notes:</th>
+            <td colspan="3">{{ import.notes }}</td>
+        </tr>
+        {% endif %}
+    </table>
+
+    <h3>Items</h3>
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Expected Quantity</th>
+                <th>Received Quantity</th>
+                <th>Status</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.expected_quantity }}</td>
+                <td>{{ item.received_quantity }}</td>
+                <td>
+                    {% if item.expected_quantity == item.received_quantity %}
+                        Complete
+                    {% elif item.received_quantity == 0 %}
+                        Pending
+                    {% else %}
+                        Partial
+                    {% endif %}
+                </td>
+                <td>{{ item.notes|default:"-" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generated on {{ import.updated_at|date:"F j, Y H:i" }}</p>
+    </div>
+</body>
+</html>

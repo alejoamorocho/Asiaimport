@@ -1,0 +1,23 @@
+Django>=4.2.0,<5.0.0
+djangorestframework>=3.14.0,<4.0.0
+django-filter>=23.2
+django-cors-headers>=4.2.0
+drf-spectacular>=0.26.4
+celery>=5.3.1
+openpyxl>=3.1.2
+pandas>=2.0.3
+pillow>=10.0.0
+django-storages>=1.13.2
+psycopg2-binary>=2.9.7
+python-dotenv>=1.0.0
+gunicorn>=21.2.0
+
+# Cache y optimización
+django-redis==5.4.0
+redis==5.0.1
+hiredis==2.2.3
+
+# Optimización de consultas
+django-debug-toolbar==4.2.0
+django-querycount==0.8.3
+django-silk==5.0.4
