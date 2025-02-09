@@ -1,5 +1,5 @@
 import django_filters
-from ..models.product import Product
+from ..domain.models.product import Product
 
 
 class ProductFilter(django_filters.FilterSet):

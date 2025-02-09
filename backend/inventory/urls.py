@@ -1,10 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views.product import ProductViewSet
-from .views.import import ImportViewSet
-from .views.category import CategoryViewSet
-from .views.import_item import ImportItemViewSet
-from .views.product_unit import ProductUnitViewSet
+from .api.views.product import ProductViewSet
+from .api.views.imports import ImportViewSet
+from .api.views.category import CategoryViewSet
+from .api.views.import_item import ImportItemViewSet
+from .api.views.product_unit import ProductUnitViewSet
 
 router = DefaultRouter()
 router.register(r'categories', CategoryViewSet)

@@ -1,6 +1,15 @@
 from django.contrib import admin
 from .models import Category, Product, Import, ImportItem, ProductUnit
 
+class ProductUnitInline(admin.TabularInline):
+    model = ProductUnit
+    extra = 0
+    fields = ('serial_number', 'status', 'technical_sheet')
+
+class ImportItemInline(admin.TabularInline):
+    model = ImportItem
+    extra = 1
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'created_at', 'updated_at')
@@ -12,29 +21,21 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'created_at', 'updated_at')
     list_filter = ('category', 'created_at')
     search_fields = ('name', 'description')
-
-class ImportItemInline(admin.TabularInline):
-    model = ImportItem
-    extra = 1
-
-class ProductUnitInline(admin.TabularInline):
-    model = ProductUnit
-    extra = 0
+    inlines = [ProductUnitInline]
 
 @admin.register(Import)
 class ImportAdmin(admin.ModelAdmin):
-    list_display = ('reference_number', 'status', 'import_date', 'created_by', 'created_at')
-    list_filter = ('status', 'import_date', 'created_at')
-    search_fields = ('reference_number', 'notes')
+    list_display = ('reference_number', 'status', 'created_at', 'created_by')
+    list_filter = ('status', 'created_at')
+    search_fields = ('reference_number',)
     inlines = [ImportItemInline]
-    date_hierarchy = 'import_date'
+    date_hierarchy = 'created_at'
 
 @admin.register(ImportItem)
 class ImportItemAdmin(admin.ModelAdmin):
-    list_display = ('import_record', 'product', 'expected_quantity', 'received_quantity')
-    list_filter = ('import_record__status', 'product')
-    search_fields = ('import_record__reference_number', 'product__name')
-    inlines = [ProductUnitInline]
+    list_display = ('import_file', 'product', 'row_number', 'status')
+    list_filter = ('import_file__status', 'status', 'product')
+    search_fields = ('import_file__id', 'product__name')
 
 @admin.register(ProductUnit)
 class ProductUnitAdmin(admin.ModelAdmin):

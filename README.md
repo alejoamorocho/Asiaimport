@@ -83,7 +83,7 @@ Sistema de gestión de inventario para importaciones de productos cosméticos.
 #### 🔄 En Progreso
 - [ ] Mejoras en pipeline de CI/CD
 - [ ] Configuración de entornos (dev, staging, prod)
-- [ ] Monitoreo de aplicación
+- [x] Monitoreo de aplicación
 
 #### 📋 Pendiente
 - [ ] Automatización de backups
@@ -108,6 +108,231 @@ Sistema de gestión de inventario para importaciones de productos cosméticos.
 - [ ] Guías de contribución
 - [ ] Documentación de arquitectura
 - [ ] Diagramas de flujo de procesos
+
+## Arquitectura del Backend
+
+El backend está estructurado siguiendo los principios de Clean Architecture y Domain-Driven Design (DDD), con una estricta adherencia a los principios SOLID. Esta arquitectura asegura un código mantenible, testeable y escalable.
+
+### Estructura del Proyecto
+
+```
+backend/
+└── inventory/
+    ├── api/                # Capa de presentación (API REST)
+    │   ├── permissions/    # Permisos de la API
+    │   ├── urls/          # URLs de la API
+    │   ├── views/         # Vistas y ViewSets
+    │   └── serializers/   # Serializadores
+    ├── application/       # Casos de uso y servicios de aplicación
+    │   ├── services/      # Servicios de aplicación
+    │   ├── tasks/         # Tareas asíncronas (Celery)
+    │   └── dto/           # Objetos de transferencia de datos
+    ├── domain/           # Núcleo de la lógica de negocio
+    │   ├── models/        # Modelos de dominio (Product, Import, etc.)
+    │   │   ├── base.py    # Modelo base abstracto
+    │   │   ├── product.py # Entidad de producto
+    │   │   └── imports.py # Entidad de importaciones
+    │   ├── interfaces/    # Interfaces y contratos
+    │   └── validators.py  # Validadores de dominio
+    ├── infrastructure/   # Implementaciones técnicas
+    │   ├── repositories/  # Implementación de repositorios
+    │   └── services/      # Servicios de infraestructura
+    └── tests/            # Tests unitarios y de integración
+```
+
+### Principios SOLID Implementados
+
+#### 1. Single Responsibility Principle (SRP)
+- Cada modelo de dominio (`product.py`, `imports.py`) tiene una única responsabilidad
+- Los validadores están separados en `validators.py`
+- Separación clara entre la lógica de negocio (domain) y la infraestructura
+
+#### 2. Open/Closed Principle (OCP)
+- Modelo base abstracto en `base.py` que permite extensión sin modificación
+- Sistema de validadores extensible
+- Uso de interfaces para permitir nuevas implementaciones
+
+#### 3. Liskov Substitution Principle (LSP)
+- Los modelos heredan de `BaseModel` y mantienen el contrato
+- Las implementaciones de repositorio son intercambiables
+- Los servicios siguen interfaces bien definidas
+
+#### 4. Interface Segregation Principle (ISP)
+- Interfaces pequeñas y específicas en lugar de una grande
+- Separación de DTOs por caso de uso
+- Permisos granulares en la API
+
+#### 5. Dependency Inversion Principle (DIP)
+- La capa de dominio no depende de implementaciones concretas
+- Uso de inyección de dependencias en los servicios
+- Las capas externas dependen de abstracciones del dominio
+
+### Características Técnicas
+
+#### 1. Validación de Dominio
+- Validadores centralizados en `domain/validators.py`
+- Reglas de negocio encapsuladas en el dominio
+- Validación a nivel de modelo y servicio
+
+#### 2. Gestión de Datos
+- Repositorios abstractos para acceso a datos
+- DTOs para transferencia segura de información
+- Mapeo claro entre modelos de dominio y DTOs
+
+#### 3. API REST
+- Endpoints RESTful bien definidos
+- Serialización/deserialización consistente
+- Sistema de permisos granular
+
+#### 4. Procesamiento Asíncrono
+- Tareas en background con Celery
+- Procesamiento de importaciones
+- Notificaciones asíncronas
+
+### Beneficios de la Arquitectura
+
+1. **Mantenibilidad**
+   - Código altamente cohesivo y bajo acoplamiento
+   - Fácil identificación y corrección de problemas
+   - Cambios localizados sin efectos secundarios
+
+2. **Testabilidad**
+   - Tests unitarios por capa
+   - Mocking facilitado por interfaces
+   - Cobertura completa del dominio
+
+3. **Escalabilidad**
+   - Fácil adición de nuevas características
+   - Cambios de implementación sin afectar el dominio
+   - Preparado para crecimiento futuro
+
+## Arquitectura del Frontend
+
+El frontend está estructurado siguiendo una arquitectura modular basada en características (Feature-based Architecture) y los principios SOLID, utilizando React con TypeScript. Esta arquitectura promueve la reutilización de código, la mantenibilidad y la escalabilidad.
+
+### Estructura del Proyecto
+
+```
+frontend/
+└── src/
+    ├── api/              # Configuración y clientes de API
+    ├── components/       # Componentes compartidos
+    ├── context/         # Contextos de React
+    ├── core/            # Configuraciones core
+    ├── features/        # Módulos de características
+    │   └── products/    # Ejemplo: Módulo de productos
+    │       ├── components/  # Componentes específicos
+    │       ├── hooks/      # Hooks personalizados
+    │       └── pages/      # Páginas del módulo
+    ├── hooks/           # Hooks compartidos
+    ├── pages/           # Páginas principales
+    ├── routes/          # Configuración de rutas
+    ├── services/        # Servicios compartidos
+    ├── shared/          # Utilidades compartidas
+    ├── store/           # Estado global (Redux)
+    ├── styles/          # Estilos globales
+    ├── types/           # Tipos TypeScript
+    └── utils/           # Utilidades generales
+```
+
+### Capas de la Arquitectura
+
+#### 1. Capa de Presentación
+- **Propósito**: Maneja la interfaz de usuario
+- **Componentes**:
+  - `components/`: Componentes UI reutilizables
+  - `pages/`: Páginas principales de la aplicación
+  - `features/*/components/`: Componentes específicos de características
+
+#### 2. Capa de Lógica de Negocio
+- **Propósito**: Maneja la lógica de la aplicación
+- **Componentes**:
+  - `features/*/hooks/`: Hooks específicos de características
+  - `store/`: Estado global y lógica de Redux
+  - `services/`: Servicios de negocio
+
+#### 3. Capa de Datos
+- **Propósito**: Maneja la comunicación con el backend
+- **Componentes**:
+  - `api/`: Configuración y clientes de API
+  - `services/`: Servicios de datos
+
+### Características Principales
+
+#### 1. Principios SOLID en React
+- **Single Responsibility**:
+  - Cada componente tiene una única responsabilidad
+  - Separación clara entre presentación y lógica
+  
+- **Open/Closed**:
+  - Componentes extensibles mediante props
+  - Uso de composición para extender funcionalidad
+  
+- **Interface Segregation**:
+  - Props específicas para cada componente
+  - Tipos TypeScript bien definidos
+  
+- **Dependency Inversion**:
+  - Inyección de dependencias via props y contextos
+  - Uso de hooks para abstraer lógica
+
+#### 2. Patrones de Diseño
+- **Feature Module Pattern**: Organización basada en características
+- **Container/Presentational Pattern**: Separación de lógica y UI
+- **Custom Hook Pattern**: Abstracción de lógica reutilizable
+- **Context Pattern**: Gestión de estado global
+- **Render Props Pattern**: Componentes flexibles y reutilizables
+
+#### 3. Características Técnicas
+- **TypeScript**: Tipado estático para mejor mantenibilidad
+- **Redux Toolkit**: Gestión eficiente del estado global
+- **React Query**: Gestión de estado del servidor
+- **Zod**: Validación de formularios y datos
+- **Tailwind CSS**: Estilos modulares y responsivos
+
+### Beneficios de la Arquitectura
+
+1. **Mantenibilidad**
+   - Código organizado por características
+   - Componentes pequeños y enfocados
+   - Lógica reutilizable en hooks
+
+2. **Escalabilidad**
+   - Fácil adición de nuevas características
+   - Módulos independientes
+   - Patrones consistentes
+
+3. **Rendimiento**
+   - Componentes optimizados
+   - Carga perezosa de módulos
+   - Gestión eficiente del estado
+
+4. **Desarrollo**
+   - Estructura clara y predecible
+   - Fácil testing
+   - Desarrollo en paralelo eficiente
+
+### Ejemplo: Módulo de Productos
+
+El módulo de productos (`features/products/`) demuestra la implementación de estos principios:
+
+```typescript
+features/products/
+├── components/
+│   ├── ProductForm.tsx     # Formulario de producto
+│   └── ProductsTable.tsx   # Tabla de productos
+├── hooks/
+│   ├── useProducts.ts      # Lógica de productos
+│   └── useProductForm.ts   # Lógica de formulario
+└── pages/
+    └── Products.tsx        # Página principal
+```
+
+Cada componente sigue el principio de responsabilidad única:
+- `ProductForm.tsx`: Maneja la entrada de datos
+- `ProductsTable.tsx`: Muestra y gestiona la lista de productos
+- `useProducts.ts`: Maneja la lógica de negocio
+- `Products.tsx`: Coordina los componentes
 
 ## Próximos Pasos Prioritarios
 

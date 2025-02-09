@@ -29,7 +29,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://cosmedical_user:cosmedical_password@db:5432/cosmedical_db
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/cosmedical
       - REDIS_URL=redis://redis:6379/1
       - DEBUG=1
       - SECRET_KEY=your-secret-key-here
@@ -41,55 +41,6 @@ services:
     depends_on:
       - db
       - redis
-
-  celery_worker:
-    build: ./backend
-    command: celery -A core worker -l INFO
-    volumes:
-      - ./backend:/app
-      - media_data:/app/media
-      - static_data:/app/static
-    environment:
-      - DATABASE_URL=postgresql://cosmedical_user:cosmedical_password@db:5432/cosmedical_db
-      - REDIS_URL=redis://redis:6379/1
-      - DEBUG=1
-      - SECRET_KEY=your-secret-key-here
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - COMPANY_NAME=Cosmedical Import
-      - COMPANY_LOGO=/static/images/logo.png
-      - SEND_PDF_NOTIFICATIONS=1
-    depends_on:
-      - backend
-      - redis
-
-  celery_beat:
-    build: ./backend
-    command: celery -A core beat -l INFO
-    volumes:
-      - ./backend:/app
-    environment:
-      - DATABASE_URL=postgresql://cosmedical_user:cosmedical_password@db:5432/cosmedical_db
-      - REDIS_URL=redis://redis:6379/1
-      - DEBUG=1
-      - SECRET_KEY=your-secret-key-here
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-    depends_on:
-      - backend
-      - redis
-
-  frontend:
-    build: ./frontend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    ports:
-      - "5173:5173"
-    environment:
-      - VITE_API_URL=http://localhost:8000
-    depends_on:
-      - backend
 
 volumes:
   postgres_data:
